@@ -1,3 +1,4 @@
+import { fetchSolvedProblems } from '@/lib/dailyPerformance';
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -5,7 +6,7 @@ const prisma = new PrismaClient();
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { email, groupId }: { email: string; groupId: string } = await req.json();
+    const { email, groupId, leetCodeId }: { email: string; groupId: string, leetCodeId : string } = await req.json();
 
     const group = await prisma.group.update({
         where: { groupId },
@@ -14,6 +15,20 @@ export const POST = async (req: NextRequest) => {
             connect: { email: email },
           },
         },
+    });
+
+    const totalSolved = await fetchSolvedProblems(leetCodeId);
+
+    await prisma.performance.create({
+      data: {
+        solvedCount: totalSolved,
+        user: {
+          connect: { email },
+        },
+        group: {
+          connect: { groupId },
+        },
+      },
     });
 
     return NextResponse.json(group);

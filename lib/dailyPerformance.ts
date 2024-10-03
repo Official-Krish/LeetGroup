@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import axios from 'axios';
 
 const prisma = new PrismaClient();
 
@@ -34,8 +35,9 @@ const calculateDailyPerformance = async () => {
   }
 };
 
-const fetchSolvedProblems = async (leetcodeId: string): Promise<number> => {
-  return Math.floor(Math.random() * 100); // Mocking for now
+export const fetchSolvedProblems = async (leetcodeId: string): Promise<number> => {
+  const res = await axios.get(`https://leetcode-stats-api.herokuapp.com/${leetcodeId}`);
+  return res.data.totalSolved;
 };
 
 export default calculateDailyPerformance;

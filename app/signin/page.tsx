@@ -48,6 +48,7 @@ export default function SignUpPage() {
       console.error('Failed to sign in:', res.error);
       setErrors({ form: res.error }); // Display form-wide errors if necessary
     } else {
+      localStorage.setItem('leetcodeId', leetcodeId);
       router.push('/'); // Redirect to home on success
     }
   };

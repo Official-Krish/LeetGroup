@@ -41,7 +41,8 @@ export default function CreateJoinGroupPage() {
           const res = await axios.post('/api/createGroup', { 
             groupId: generatedRoomId,
             name: session.data.user.name, 
-            email: session.data.user.email 
+            email: session.data.user.email,
+            leetCodeId: localStorage.getItem('leetcodeId'), 
           });
       
           if (res.status === 200) {
@@ -59,7 +60,8 @@ export default function CreateJoinGroupPage() {
     const handleJoinGroup = async () => {
         const res = await axios.post('/api/joingroup', { 
             groupId: generatedRoomId,
-            email: session?.data?.user?.email
+            email: session?.data?.user?.email,
+            leetCodeId: localStorage.getItem('leetcodeId'),
         })        
         if(res.status === 200) {
             router.push(`/`)
