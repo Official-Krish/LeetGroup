@@ -5,9 +5,11 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Trophy, Users, Zap, Star, TrendingUp } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 
 export default function LandingPage() {
-  const router = useRouter()
+  const router = useRouter();
+  const session = useSession();
   return (
     <div className="flex flex-col min-h-screen bg-gray-950 text-gray-100">
       <main className="flex-1">
@@ -24,12 +26,28 @@ export default function LandingPage() {
                 </p>
               </div>
               <div className="space-x-4">
-                <Button variant="default" size="lg" onClick={()=> router.push('/CreateGroup')}>
-                  Start Competing
-                </Button>
-                <Button variant="outline" size="lg" className="text-black hover:text-white hover:bg-gray-600">
-                  Explore Features
-                </Button>
+                {session?.data?.user && 
+                  <div>
+                    <Button variant="default" size="lg" onClick={()=> router.push('/CreateGroup')}>
+                      Start Competing
+                    </Button>
+                    <Button variant="outline" size="lg" className="text-black hover:text-white hover:bg-gray-600">
+                      Explore Features
+                    </Button>
+                  </div>
+                }
+
+                {!session?.data?.user && 
+                  <div>
+                    <Button variant="default" size="lg" onClick={()=> router.push('/signin')}>
+                      Get Started
+                    </Button>
+                    <Button variant="outline" size="lg" className="text-black hover:text-white hover:bg-gray-600">
+                      Explore Features
+                    </Button>
+                  </div>
+                }
+                
               </div>
             </div>
           </div>
@@ -121,36 +139,41 @@ export default function LandingPage() {
         </section>
 
         {/* Section 4: Call to Action */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-t from-gray-900 to-gray-950 flex justify-center items-center">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Ready to Elevate Your Coding Journey?
-                </h2>
-                <p className="mx-auto max-w-[600px] text-gray-400 md:text-xl">
-                  Join LeetGroup today and start your path to coding excellence.
-                </p>
+        {!session?.data?.user && 
+         <div>
+            <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-t from-gray-900 to-gray-950 flex justify-center items-center">
+              <div className="container px-4 md:px-6">
+                <div className="flex flex-col items-center space-y-4 text-center">
+                  <div className="space-y-2">
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                      Ready to Elevate Your Coding Journey?
+                    </h2>
+                    <p className="mx-auto max-w-[600px] text-gray-400 md:text-xl">
+                      Join LeetGroup today and start your path to coding excellence.
+                    </p>
+                  </div>
+                  <div className="w-full max-w-sm space-y-2">
+                    <form className="flex space-x-2">
+                      <Input
+                        className="max-w-lg flex-1 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                        placeholder="Enter your email"
+                        type="email"
+                      />
+                      <Button type="submit">Sign Up</Button>
+                    </form>
+                    <p className="text-xs text-gray-400">
+                      By signing up, you agree to our{" "}
+                      <Link className="underline underline-offset-2 hover:text-primary" href="#">
+                        Terms & Conditions
+                      </Link>
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div className="w-full max-w-sm space-y-2">
-                <form className="flex space-x-2">
-                  <Input
-                    className="max-w-lg flex-1 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
-                    placeholder="Enter your email"
-                    type="email"
-                  />
-                  <Button type="submit">Sign Up</Button>
-                </form>
-                <p className="text-xs text-gray-400">
-                  By signing up, you agree to our{" "}
-                  <Link className="underline underline-offset-2 hover:text-primary" href="#">
-                    Terms & Conditions
-                  </Link>
-                </p>
-              </div>
-            </div>
+            </section>
           </div>
-        </section>
+        }
+        
       </main>
     </div>
   )

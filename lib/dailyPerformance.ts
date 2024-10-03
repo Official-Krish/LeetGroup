@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 const calculateDailyPerformance = async () => {
   const groups = await prisma.group.findMany({
     include: {
-      members: true, 
+      members: true,
     },
   });
 
@@ -18,16 +18,16 @@ const calculateDailyPerformance = async () => {
         where: {
           userId_groupId: {
             userId: member.id,
-            groupId: group.id, 
+            groupId: group.groupId, 
           },
         },
         update: {
           solvedCount: solvedCount,
-          createdAt: new Date(), 
+          createdAt: new Date(),
         },
         create: {
           userId: member.id,
-          groupId: group.id, 
+          groupId: group.groupId, // Ensure this is the correct groupId type (string)
           solvedCount: solvedCount,
         },
       });
