@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { Plus, TrendingUp, UserCircle, Users } from "lucide-react";
+import { Plus, TrendingUp, Users, UsersRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -71,10 +71,13 @@ const Groups = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center text-gray-400 mb-4">
-                    <Users className="h-5 w-5 mr-2" />
                     {group.members.map((member) => (
                       <div key={member.email} className="flex items-center">
-                        <span className="text-lg">{member.username}</span>
+                        <Users className="h-5 w-5 mr-2" />
+                        <span className="text-lg">{
+                          member.username === session?.user?.name ? "You" : member.username
+
+                        }</span>
                       </div>
                     ))}
                   </div>
@@ -83,9 +86,10 @@ const Groups = () => {
                   <Button variant="outline" onClick={() => handleGroupSelect(group.groupId)}>
                     <TrendingUp className="mr-2 h-4 w-4" /> View Leaderboard
                   </Button>
-                  <button className="bg-white rounded-lg py-1.5 px-2">
-                    <Link href={`/group/${group.id}`}>Group Details</Link>
-                  </button>
+                  <Link className="bg-white rounded-lg py-1.5 px-2 font-normal flex" href={`/group/${group.id}`}>
+                    <UsersRound className="h-5 w-5" />
+                    <div className="ml-1">Group Details</div>
+                  </Link>
                 </CardFooter>
               </Card>
             ))}

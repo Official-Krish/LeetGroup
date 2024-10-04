@@ -2,6 +2,10 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft, Trophy } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 interface Performance {
   user: {
@@ -9,25 +13,20 @@ interface Performance {
   };
   solvedCount: number;
   createdAt: string;
+  group: {
+    name: string;
+  };
 }
 
 const Leaderboard = () => {
   const [performances, setPerformances] = useState<Performance[]>([]);
-  const [solved , setSolved] = useState<number>();
   const { groupId } = useParams();
-  let prev : number;
 
   useEffect(() => {
     if (groupId) {
       const fetchLeaderboard = async () => {
         try {
           const response = await axios.get(`/api/leaderboard?groupId=${groupId}`);
-          if (solved === undefined) {
-            prev = 0;
-          } else {
-            prev = solved;
-          }
-          setSolved(response.data[0].solvedCount - prev);
           setPerformances(response.data);
         } catch (error) {
           console.error('Error fetching leaderboard:', error);
@@ -38,28 +37,53 @@ const Leaderboard = () => {
   }, [groupId]);
 
   return (
-    <div>
-      <h1>Leaderboard for Group {groupId}</h1>
-      <table style={{ width: '100%', borderCollapse: 'collapse', margin: '20px 0' }}>
-        <thead>
-          <tr>
-            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Rank</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Username</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Solved Count</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {performances.map((performance, index) => (
-            <tr key={index}>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{index + 1}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{performance.user.username}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{solved}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{new Date(performance.createdAt).toLocaleDateString()}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="min-h-screen bg-gray-50 text-gray-900">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <Button variant="outline" className="mb-6" onClick={() => {}}>
+          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Group
+        </Button>
+
+        <Card className="bg-white border-gray-200">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold flex items-center justify-between">
+              {performances.length > 0 ? (
+                <span>{performances[0].group.name} Leaderboard</span>
+              ) : (
+                <span>Leaderboard</span>
+              )}
+              <Trophy className="h-6 w-6 text-yellow-500" />
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[50px]">Rank</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead className="text-right">Problems Solved</TableHead>
+                  <TableHead className="text-right">Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {performances.map((performance, index) => (
+                  <TableRow 
+                    key={index} 
+                    className={index === 0 ? 'bg-yellow-100 rounded-lg' : ''} 
+                  >
+                    <TableCell className="font-normal text-lg">{index + 1}</TableCell>
+                    <TableCell className="font-normal text-lg">{performance.user.username}</TableCell>
+                    <TableCell className="text-right font-light text-lg">{performance.solvedCount}</TableCell>
+                    <TableCell className={`text-right text-md font-medium `}>
+                      {index === 0 ? "Winner" : "Participant"}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+
+            </Table>
+          </CardContent>
+        </Card>
+      </main>
     </div>
   );
 };

@@ -16,7 +16,8 @@ export const GET = async (req: NextRequest) => {
       where: { groupId }, 
       orderBy: { solvedCount: 'desc' }, 
       include: {
-        user: true, 
+        user: true,
+        group: true, 
       },
     });
 
