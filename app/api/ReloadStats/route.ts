@@ -1,10 +1,8 @@
 import calculateDailyPerformance from '@/lib/dailyPerformance';
-import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-const prisma = new PrismaClient();
 
-export const POST = async (req: NextRequest) => {
+export const POST = async (res : NextResponse, req : NextRequest) => {
     try{
         await calculateDailyPerformance();
         return NextResponse.json({ message: 'Stats reloaded' });
