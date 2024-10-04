@@ -1,9 +1,8 @@
 import calculateDailyPerformance from '@/lib/dailyPerformance';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-
-export const POST = async (res : NextResponse, req : NextRequest) => {
-    try{
+export const POST = async () => {
+    try {
         await calculateDailyPerformance();
         return NextResponse.json({ message: 'Stats reloaded' });
     } catch (error) {

@@ -65,7 +65,7 @@ const Leaderboard = () => {
       };
       fetchLeaderboard();
     }
-  }, [refresh]);
+  }, [refresh, groupId]);
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">

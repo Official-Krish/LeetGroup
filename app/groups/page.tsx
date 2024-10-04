@@ -56,9 +56,9 @@ const Groups = () => {
         {groups.length === 0 ? (
           <Card className="bg-gray-900 border-gray-800">
             <CardContent className="pt-6 text-center">
-              <p className="text-gray-400">You haven't joined any groups yet.</p>
+              <p className="text-gray-400">You haven&apos;t joined any groups yet.</p>
               <Button asChild className="mt-4">
-                <Link href="/create-join-group">Create or Join a Group</Link>
+                <Link href="/CreateGroup">Create or Join a Group</Link>
               </Button>
             </CardContent>
           </Card>

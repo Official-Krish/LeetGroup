@@ -39,7 +39,7 @@ export const authOptions: AuthOptions = {
           if (isPasswordCorrect) {
             
             return {
-                id : userDb.id,
+                id: String(userDb.id),
                 name: userDb.username,
                 email: userDb.email,
                 leetcodeId: userDb.leetcodeId,
@@ -65,7 +65,7 @@ export const authOptions: AuthOptions = {
           });
 
           return {
-            id : newUser.id,
+            id: String(newUser.id),
             name: newUser.username,
             email: newUser.email,
             leetcodeId: newUser.leetcodeId,

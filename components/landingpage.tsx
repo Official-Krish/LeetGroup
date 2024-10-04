@@ -86,7 +86,7 @@ export default function LandingPage() {
                   <Trophy className="h-12 w-12 text-white" />
                   <h3 className="text-xl font-bold text-white">Dynamic Leaderboards</h3>
                   <p className="text-gray-400 text-center">
-                    Compete to top your group's leaderboard and earn bragging rights.
+                    Compete to top your group&apos;s leaderboard and earn bragging rights.
                   </p>
                 </CardContent>
               </Card>
@@ -103,7 +103,7 @@ export default function LandingPage() {
                   Supercharge Your Coding Skills
                 </h2>
                 <p className="max-w-[600px] text-gray-400 md:text-xl">
-                  With LeetGroup, you're not just solving problems – you're building a community of skilled developers.
+                  With LeetGroup, you&apos;re not just solving problems – you&apos;re building a community of skilled developers.
                 </p>
                 <ul className="space-y-2">
                   <li className="flex items-center space-x-2">
@@ -127,7 +127,7 @@ export default function LandingPage() {
                   <div className="absolute -bottom-8 left-20 w-72 h-72 bg-tertiary rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
                   <div className="relative">
                     <div className="p-8 bg-gray-800 border border-gray-700 rounded-lg shadow-2xl">
-                      <h3 className="text-2xl font-bold mb-4">Today's Challenge</h3>
+                      <h3 className="text-2xl font-bold mb-4">Today&apos;s Challenge</h3>
                       <p className="text-gray-400 mb-4">Solve the problem and climb the leaderboard!</p>
                       <Button className="w-full">Start Coding</Button>
                     </div>
