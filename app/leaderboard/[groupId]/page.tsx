@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, RefreshCw, Trophy, Users } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useSession } from 'next-auth/react';
 
 interface Performance {
   user: {
@@ -24,6 +25,7 @@ const Leaderboard = () => {
   const { groupId } = useParams();
   const [refresh, setRefresh] = useState(false);
   const router = useRouter();
+  const session = useSession();
 
   // Fetch previous solved count for a specific user from localStorage
   const getPrevSolvedCount = (username: string): number => {
@@ -91,14 +93,18 @@ const Leaderboard = () => {
                 Leaderboard
                 <Trophy className="h-5 w-5 text-yellow-500 ml-2" />
               </h2>
-              <Button onClick={async () => {
-                setRefresh(true);
-                await axios.post("/api/ReloadStats");
-                window.location.reload();
-              }}>
-                <RefreshCw className="mr-2 h-4 w-4" />
-                Refresh
-              </Button>
+              {session.data?.user?.email === "krishanand974@gmail.com" && 
+                <div>
+                  <Button onClick={async () => {
+                    setRefresh(true);
+                    await axios.post("/api/ReloadStats");
+                    window.location.reload();
+                  }}>
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                    Refresh
+                  </Button>
+                </div>
+              }
             </div>
           </div>
 
