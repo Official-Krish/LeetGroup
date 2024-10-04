@@ -36,16 +36,14 @@ const Leaderboard = () => {
   };
 
   useEffect(() => {
-    if (groupId) {
+    if ( groupId) {
       const fetchLeaderboard = async () => {
         try {
           const response = await axios.get(`/api/leaderboard?groupId=${groupId}`);
 
           const updatedPerformances = response.data.map((performance: Performance) => {
             const prevSolvedCount = getPrevSolvedCount(performance.user.username); // Get the previous solved count
-            console.log("prevSolvedCount", prevSolvedCount);
             const solvedDiff = performance.solvedCount - prevSolvedCount; // Calculate difference
-            console.log("solvedDiff", solvedDiff);
 
             // Update localStorage for next comparison
             saveSolvedCount(performance.user.username, performance.solvedCount);
@@ -58,14 +56,15 @@ const Leaderboard = () => {
           });
 
           setPerformances(updatedPerformances); // Update state with diff included
-          setRefresh(false);
+          setRefresh(false); // Reset refresh state after data is fetched
         } catch (error) {
           console.error('Error fetching leaderboard:', error);
         }
       };
+
       fetchLeaderboard();
     }
-  }, [refresh, groupId]);
+  }, [refresh]);
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
