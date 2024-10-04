@@ -1,7 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import axios from 'axios';
+import { prisma } from './db';
 
-const prisma = new PrismaClient();
 
 const calculateDailyPerformance = async () => {
   const groups = await prisma.group.findMany({
