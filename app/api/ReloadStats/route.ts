@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { fetchSolvedProblems } from '@/lib/dailyPerformance';
 import { prisma } from '@/lib/db';
 import { NextResponse } from 'next/server';
