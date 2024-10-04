@@ -10,12 +10,29 @@ export const Appbar = () => {
           <span className="font-bold text-white">LeetGroup</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium transition-colors" href="#">
-            Features
-          </Link>
-          <Link className="text-sm font-medium transition-colors" href="#">
-            Pricing
-          </Link>
+          {session.data?.user?.email &&
+            <div className="ml-auto flex gap-4 sm:gap-6">
+              <Link className="text-sm font-medium transition-colors" href="/groups">
+                Dashboard
+              </Link>
+              <Link className="text-sm font-medium transition-colors" href="/CreateGroup">
+                Create Group
+              </Link>
+            </div>
+          }
+
+          {!session.data?.user?.email &&
+            <div className="ml-auto flex gap-4 sm:gap-6">
+              <Link className="text-sm font-medium transition-colors" href="#">
+                Features
+              </Link>
+              <Link className="text-sm font-medium transition-colors" href="#">
+                Pricing
+              </Link>
+            </div>
+            
+          }
+          
           {session.data?.user?.email && <button className="text-sm font-medium transition-colors" onClick={() => signOut()}>
             Logout
           </button>}

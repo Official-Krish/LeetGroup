@@ -17,6 +17,9 @@ export const GET = async (req: NextRequest) => {
           some: { email: email },
         },
       },
+      include : {
+        members: true
+      }
     });
 
     return NextResponse.json(groups);

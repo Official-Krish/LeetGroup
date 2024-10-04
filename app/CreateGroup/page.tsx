@@ -20,6 +20,7 @@ export default function CreateJoinGroupPage() {
     const [generatedRoomId, setGeneratedRoomId] = useState('')
     const [error, setError] = useState('')
     const router = useRouter()
+    const [roomName, setRoomName] = useState('')
 
     const generateRoomId = () => {
         const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase()
@@ -40,7 +41,7 @@ export default function CreateJoinGroupPage() {
         try {
           const res = await axios.post('/api/createGroup', { 
             groupId: generatedRoomId,
-            name: session.data.user.name, 
+            name: roomName,
             email: session.data.user.email,
             leetCodeId: localStorage.getItem('leetcodeId'), 
           });
@@ -86,10 +87,10 @@ export default function CreateJoinGroupPage() {
                 <span className="text-2xl font-bold text-white">LeetGroup</span>
                 </Link>
                 <h2 className="mt-6 text-center text-3xl font-extrabold">
-                Create or Join a Group
+                    Create or Join a Group
                 </h2>
                 <p className="mt-2 text-center text-sm text-gray-400">
-                Collaborate with friends and improve your coding skills together
+                    Collaborate with friends and improve your coding skills together
                 </p>
             </div>
 
@@ -103,48 +104,63 @@ export default function CreateJoinGroupPage() {
                     <TabsContent value="create" className="mt-4">
                     <div className="space-y-4">
                         <div>
-                        <Label htmlFor="generated-room-id" className='text-white'>Generated Room ID</Label>
-                        <div className="flex mt-1">
-                            <Input
-                            id="generated-room-id"
-                            type="text"
-                            value={generatedRoomId}
-                            readOnly
-                            className="bg-gray-800 border-gray-700 text-white"
-                            />
-                            <Button
-                            type="button"
-                            variant="outline"
-                            className="ml-2"
-                            onClick={copyToClipboard}
-                            >
-                            <Copy className="h-4 w-4" />
-                            </Button>
-                        </div>
+                            <Label htmlFor="room-id" className='text-white'>Enter Room Name</Label>
+                            <div className='mt-1'>
+                                <Input
+                                    id="room-name"
+                                    type="text"
+                                    value={roomName}
+                                    onChange={(e) => setRoomName(e.target.value)}
+                                    placeholder="Enter Room ID"
+                                    className="bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                                />
+                            </div>
+                            <div className='mt-4'>
+                                <Label htmlFor="generated-room-id" className='text-white'>Generated Room ID</Label>
+                                <div className="flex mt-1">
+                                    <Input
+                                    id="generated-room-id"
+                                    type="text"
+                                    value={generatedRoomId}
+                                    readOnly
+                                    className="bg-gray-800 border-gray-700 text-white"
+                                    />
+                                    <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="ml-2"
+                                    onClick={copyToClipboard}
+                                    >
+                                    <Copy className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                            </div>
                         </div>
                         <Button onClick={generateRoomId} className="w-full">
-                        Generate Room ID
+                            Generate Room ID
                         </Button>
                         <Button onClick={handleCreateGroup} className="w-full" disabled={!generatedRoomId}>
-                        Create Group
+                            Create Group
                         </Button>
                     </div>
                     </TabsContent>
                     <TabsContent value="join" className="mt-4">
                     <form onSubmit={handleJoinGroup} className="space-y-4">
                         <div>
-                        <Label htmlFor="room-id">Room ID</Label>
-                        <Input
-                            id="room-id"
-                            type="text"
-                            value={roomId}
-                            onChange={(e) => setRoomId(e.target.value)}
-                            placeholder="Enter Room ID"
-                            className="bg-gray-800 border-gray-700 text-white placeholder-gray-400"
-                        />
+                            <Label htmlFor="room-id" className='text-white'>Enter Room ID</Label>
+                            <div className='mt-1'>
+                                <Input
+                                    id="room-id"
+                                    type="text"
+                                    value={roomId}
+                                    onChange={(e) => setRoomId(e.target.value)}
+                                    placeholder="Enter Room ID"
+                                    className="bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                                />
+                            </div>
                         </div>
                         <Button type="submit" className="w-full">
-                        Join Group
+                            Join Group
                         </Button>
                     </form>
                     </TabsContent>
@@ -159,7 +175,7 @@ export default function CreateJoinGroupPage() {
             <div className="flex items-center justify-center">
                 <Users className="h-5 w-5 text-primary mr-2" />
                 <span className="text-sm text-gray-400">
-                Connect with fellow coders and challenge each other
+                    Connect with fellow coders and challenge each other
                 </span>
             </div>
             </div>
