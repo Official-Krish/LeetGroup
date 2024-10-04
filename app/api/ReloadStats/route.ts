@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import calculateDailyPerformance from '@/lib/dailyPerformance';
 import { NextResponse } from 'next/server';
 
