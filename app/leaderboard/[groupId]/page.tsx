@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, RefreshCw, Trophy, Users } from 'lucide-react';
@@ -22,6 +22,8 @@ interface Performance {
 const Leaderboard = () => {
   const [performances, setPerformances] = useState<Performance[]>([]);
   const { groupId } = useParams();
+  const [refresh, setRefresh] = useState(false);
+  const router = useRouter();
 
   // Fetch previous solved count for a specific user from localStorage
   const getPrevSolvedCount = (username: string): number => {
@@ -56,18 +58,19 @@ const Leaderboard = () => {
           });
 
           setPerformances(updatedPerformances); // Update state with diff included
+          setRefresh(false);
         } catch (error) {
           console.error('Error fetching leaderboard:', error);
         }
       };
       fetchLeaderboard();
     }
-  }, [groupId]);
+  }, [refresh]);
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <Button variant="outline" className="mb-6" onClick={() => {}}>
+        <Button variant="outline" className="mb-6" onClick={() => {router.push(`/groups`)}}>
           <ArrowLeft className="mr-2 h-4 w-4" /> Back to Group
         </Button>
         <div className="bg-white border border-gray-200 rounded-lg shadow-sm mb-6">
@@ -90,6 +93,7 @@ const Leaderboard = () => {
                 <Trophy className="h-5 w-5 text-yellow-500 ml-2" />
               </h2>
               <Button onClick={async () => {
+                setRefresh(true);
                 await axios.post("/api/ReloadStats");
                 window.location.reload();
               }}>
@@ -106,7 +110,7 @@ const Leaderboard = () => {
                   <TableHead className="w-[50px]">Rank</TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead className="text-right">Problems Solved</TableHead>
-                  <TableHead className="text-right">Diff (Solved - Previous)</TableHead> {/* Show the diff */}
+                  <TableHead className="text-right">In 24hrs</TableHead> 
                   <TableHead className="text-right">Status</TableHead>
                 </TableRow>
               </TableHeader>
@@ -120,7 +124,7 @@ const Leaderboard = () => {
                     <TableCell className="font-normal text-lg">{performance.user.username}</TableCell>
                     <TableCell className="text-right font-light text-lg">{performance.solvedCount}</TableCell>
                     <TableCell className="text-right font-extralight text-lg">
-                      {performance.solvedDiff === 0 ? "No Change" : performance.solvedDiff}
+                      {performance.solvedDiff === 0 ? 0 : performance.solvedDiff}
                     </TableCell>
                     <TableCell className={`text-right text-lg font-medium `}>
                       {index === 0 ? "Winner" : "Participant"}
