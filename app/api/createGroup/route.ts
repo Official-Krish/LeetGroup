@@ -6,7 +6,14 @@ const prisma = new PrismaClient();
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { name, email, groupId, leetCodeId}: { name: string; email: string; groupId: string, leetCodeId : string } = await req.json();
+    const { name, email, groupId, leetCodeId } = await req.json();
+    const userExists = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!userExists) {
+      throw new Error('User does not exist');
+    }
 
     const group = await prisma.group.create({
       data: {
@@ -30,9 +37,10 @@ export const POST = async (req: NextRequest) => {
         },
       },
     });
+
     return NextResponse.json(group);
   } catch (error) {
     console.error('Failed to create group:', error);
-    return NextResponse.json({ error: 'Failed to create group' }, { status: 500 });
+    return NextResponse.json('Failed to create group', { status: 500 });
   }
-}
+};
