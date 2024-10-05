@@ -27,38 +27,14 @@ const Leaderboard = () => {
   const router = useRouter();
   const session = useSession();
 
-  // Fetch previous solved count for a specific user from localStorage
-  const getPrevSolvedCount = (username: string): number => {
-    return Number(localStorage.getItem(`solvedCount_${username}`) || 0);
-  };
-
-  // Store solved count for a specific user in localStorage
-  const saveSolvedCount = (username: string, solvedCount: number) => {
-    localStorage.setItem(`solvedCount_${username}`, solvedCount.toString());
-  };
-
   useEffect(() => {
     if ( groupId) {
       const fetchLeaderboard = async () => {
         try {
           const response = await axios.get(`/api/leaderboard?groupId=${groupId}`);
-
-          const updatedPerformances = response.data.map((performance: Performance) => {
-            const prevSolvedCount = getPrevSolvedCount(performance.user.username); // Get the previous solved count
-            const solvedDiff = performance.solvedCount - prevSolvedCount; // Calculate difference
-
-            // Update localStorage for next comparison
-            saveSolvedCount(performance.user.username, performance.solvedCount);
-
-            // Return the performance object with the calculated solvedDiff
-            return {
-              ...performance,
-              solvedDiff: solvedDiff, // Adding solvedDiff to the performance object
-            };
-          });
-
-          setPerformances(updatedPerformances); // Update state with diff included
-          setRefresh(false); // Reset refresh state after data is fetched
+          setPerformances(response.data); 
+          console.log(response.data);
+          setRefresh(false); 
         } catch (error) {
           console.error('Error fetching leaderboard:', error);
         }
@@ -129,7 +105,7 @@ const Leaderboard = () => {
                     <TableCell className="font-normal text-lg">{performance.user.username}</TableCell>
                     <TableCell className="text-right font-light text-lg">{performance.solvedCount}</TableCell>
                     <TableCell className="text-right font-extralight text-lg">
-                      {performance.solvedDiff === 0 ? 0 : performance.solvedDiff}
+                      {performance.solvedDiff}
                     </TableCell>
                     <TableCell className={`text-right text-lg font-medium `}>
                       {index === 0 ? "Winner" : "Participant"}

@@ -10,30 +10,49 @@ export const POST = async () => {
                 members: true,
             },
         });
-        
+
         for (const group of groups) {
             for (const member of group.members) {
-            const solvedCount = await fetchSolvedProblems(member.leetcodeId); 
-        
-            await prisma.performance.upsert({
-                where: {
-                userId_groupId: {
-                    userId: member.id,
-                    groupId: group.groupId, 
-                },
-                },
-                update: {
-                solvedCount: solvedCount,
-                createdAt: new Date(),
-                },
-                create: {
-                userId: member.id,
-                groupId: group.groupId, 
-                solvedCount: solvedCount,
-                },
-            });
+                const updatedSolvedCount = await fetchSolvedProblems(member.leetcodeId); 
+
+                // Fetch the previous performance to get the previous solvedCount
+                const prevPerformance = await prisma.performance.findUnique({
+                    where: {
+                        userId_groupId: {
+                            userId: member.id,
+                            groupId: group.groupId,
+                        },
+                    },
+                });
+
+                const prevSolvedCount = prevPerformance ? prevPerformance.solvedCount : 0;
+
+                // Calculate the difference
+                const solvedDiff = updatedSolvedCount - prevSolvedCount;
+
+                // Upsert (update if exists, otherwise create) the performance record with the new count and diff
+                await prisma.performance.upsert({
+                    where: {
+                        userId_groupId: {
+                            userId: member.id,
+                            groupId: group.groupId, 
+                        },
+                    },
+                    update: {
+                        solvedCount: updatedSolvedCount, 
+                        solvedDiff: solvedDiff,          
+                        createdAt: new Date(),
+                    },
+                    create: {
+                        userId: member.id,
+                        groupId: group.groupId, 
+                        solvedCount: updatedSolvedCount,
+                        solvedDiff: solvedDiff,          
+                    },
+                });
             }
         }
+
         return NextResponse.json({ message: 'Stats reloaded' });
     } catch (error) {
         console.error('Error fetching leaderboard:', error);

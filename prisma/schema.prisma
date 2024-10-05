@@ -33,6 +33,7 @@ model Performance {
   group        Group         @relation(fields: [groupId], references: [groupId]) 
   user         User          @relation(fields: [userId], references: [id]) 
   solvedCount  Int
+  solvedDiff   Int            @default(0)
   createdAt    DateTime       @default(now())
   @@unique([userId, groupId]) 
 }
