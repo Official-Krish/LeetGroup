@@ -61,18 +61,26 @@ export default function CreateJoinGroupPage() {
     };
       
     const handleJoinGroup = async () => {
-        const res = await axios.post('/api/joingroup', { 
-            groupId: roomId, // Make sure you use the roomId from the input
-            email: session.data?.user?.email,
-            leetCodeId: localStorage.getItem('leetcodeId'),
-        });
-        
-        if (res.status === 200) {
-            router.push(`/`);
-        } else {
+        try {
+            const res = await axios.post('/api/joinGroup', { 
+                groupId: roomId, 
+                email: session.data?.user?.email,
+                leetCodeId: localStorage.getItem('leetcodeId'),
+            });
+    
+            if (res.status === 200) {
+                router.push(`/groups/${roomId}`);
+            } else {
+                alert('Failed to join group');
+                setError('Failed to join group');
+            }
+        } catch (error) {
+            console.error("Error joining group:", error);
             setError('Failed to join group');
+            alert('Failed to join group');
         }
     };
+    
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(generatedRoomId)

@@ -27,11 +27,12 @@ model Group {
 }
 
 model Performance {
-  id           Int           @id @default(autoincrement())
+  id           Int            @id @default(autoincrement())
   userId       Int
-  groupId      String        
-  group        Group         @relation(fields: [groupId], references: [groupId]) 
-  user         User          @relation(fields: [userId], references: [id]) 
+  groupId      String
+  hasTreated   Boolean        @default(false)       
+  group        Group          @relation(fields: [groupId], references: [groupId]) 
+  user         User           @relation(fields: [userId], references: [id]) 
   solvedCount  Int
   solvedDiff   Int            @default(0)
   createdAt    DateTime       @default(now())

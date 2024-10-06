@@ -76,7 +76,6 @@ const Groups = () => {
                         <Users className="h-5 w-5 mr-2" />
                         <span className="text-lg">{
                           member.username === session?.user?.name ? "You" : member.username
-
                         }</span>
                       </div>
                     ))}
