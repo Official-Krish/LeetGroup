@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic';
-import { fetchSolvedProblems } from '@/lib/dailyPerformance';
+import { fetchSolvedProblems, fetchStriverDetails } from '@/lib/dailyPerformance';
 import { prisma } from '@/lib/db';
 import { NextResponse } from 'next/server';
 
@@ -13,7 +13,8 @@ export const POST = async () => {
 
         for (const group of groups) {
             for (const member of group.members) {
-                const updatedSolvedCount = await fetchSolvedProblems(member.leetcodeId); 
+                const updatedSolvedCount = await fetchSolvedProblems(member.leetcodeId);
+                const updateStriverDetails = await fetchStriverDetails(member.striver_id || ""); 
 
                 // Fetch the previous performance to get the previous solvedCount
                 const prevPerformance = await prisma.performance.findUnique({
@@ -42,12 +43,18 @@ export const POST = async () => {
                         solvedCount: updatedSolvedCount, 
                         solvedDiff: solvedDiff,          
                         createdAt: new Date(),
+                        SDE : updateStriverDetails.sheet_sde,
+                        AtoZ : updateStriverDetails.sheet_a2z,
+                        sheet_79 : updateStriverDetails.sheet_79
                     },
                     create: {
                         userId: member.id,
                         groupId: group.groupId, 
                         solvedCount: updatedSolvedCount,
-                        solvedDiff: solvedDiff,          
+                        solvedDiff: solvedDiff,  
+                        SDE : updateStriverDetails.sheet_sde,
+                        AtoZ : updateStriverDetails.sheet_a2z,
+                        sheet_79 : updateStriverDetails.sheet_79     
                     },
                 });
             }

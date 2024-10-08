@@ -12,6 +12,7 @@ export const authOptions: AuthOptions = {
         email: { label: 'email', type: 'text', placeholder: "Enter Your Email" },
         password: { label: 'password', type: 'password', placeholder: "Enter Your Password" },
         leetcodeId: { label: 'leetcodeId', type: 'text', placeholder: "Enter Your Leetcode Id" },
+        striverId: { label: 'striver_Id', type: 'text', placeholder: "Enter Your Striver Id" }
       },
       async authorize(credentials) {
         // Check if credentials are provided and defined
@@ -43,6 +44,7 @@ export const authOptions: AuthOptions = {
                 name: userDb.username,
                 email: userDb.email,
                 leetcodeId: userDb.leetcodeId,
+                striver_id : userDb.striver_id
             };
           } else {
             return null; // Invalid password
@@ -61,6 +63,7 @@ export const authOptions: AuthOptions = {
               username: credentials.username,
               password: hashedPassword,
               leetcodeId: credentials.leetcodeId,
+              striver_id : credentials.striverId
             },
           });
 
@@ -69,6 +72,7 @@ export const authOptions: AuthOptions = {
             name: newUser.username,
             email: newUser.email,
             leetcodeId: newUser.leetcodeId,
+            striver_id : newUser.striver_id
           };
         } catch (e) {
           console.error(e); 

@@ -16,7 +16,7 @@ export const GET = async (req: NextRequest) => {
       orderBy: { solvedCount: 'desc' }, 
       include: {
         user: true,
-        group: true, 
+        group: true,
       },
     });
 
@@ -30,3 +30,5 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.json({ error: 'Failed to fetch leaderboard' }, { status: 500 });
   }
 };
+
+

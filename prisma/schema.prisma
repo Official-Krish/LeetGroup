@@ -13,8 +13,9 @@ model User {
   email        String        @unique
   password     String
   leetcodeId   String
+  striver_id   String        @unique
   groups       Group[]       @relation("GroupMembers")
-  performances Performance[] 
+  performances Performance[]
 }
 
 model Group {
@@ -35,6 +36,9 @@ model Performance {
   user         User           @relation(fields: [userId], references: [id]) 
   solvedCount  Int
   solvedDiff   Int            @default(0)
-  createdAt    DateTime       @default(now())
+  SDE          Int            @default(0)
+  AtoZ         Int            @default(0)
+  sheet_79     Int            @default(0)
+  createdAt    DateTime       @default(now())     
   @@unique([userId, groupId]) 
 }

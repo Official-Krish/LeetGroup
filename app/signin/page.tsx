@@ -16,6 +16,7 @@ export default function SignUpPage() {
   const [password, setPassword] = useState('')
   const [leetcodeId, setLeetcodeId] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [striverId, setStriverId] = useState('')
   const router = useRouter()
 
   const Submit = async (event: React.FormEvent) => {
@@ -25,12 +26,13 @@ export default function SignUpPage() {
     setErrors({});
 
     // Simple validation
-    if (!name || !email || !password || !leetcodeId) {
+    if (!name || !email || !password || !leetcodeId || !striverId) {
       setErrors({
         name: !name ? 'Name is required' : '',
         email: !email ? 'Email is required' : '',
         password: !password ? 'Password is required' : '',
         leetcodeId: !leetcodeId ? 'LeetCode ID is required' : '',
+        striverId: !striverId ? 'Striver ID is required' : '',
       });
       return;
     }
@@ -41,6 +43,7 @@ export default function SignUpPage() {
       email,
       password,
       leetcodeId,
+      striverId,
       redirect: false // Avoid automatic redirect
     });
 
@@ -118,6 +121,19 @@ export default function SignUpPage() {
                     className="bg-gray-800 border-gray-700 text-white placeholder-gray-400"
                   />
                   {errors.leetcodeId && <p className="text-red-500 text-sm">{errors.leetcodeId}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="StriverId" className="text-white">Striver ID</Label>
+                  <Input
+                    id="striverId"
+                    type="text"
+                    placeholder="Your Striver Id"
+                    value={striverId}
+                    onChange={(e) => setStriverId(e.target.value)}
+                    className="bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                  />
+                  {errors.striverId && <p className="text-red-500 text-sm">{errors.striverId}</p>}
                 </div>
                 <Button type="submit" className="w-full">Sign Up</Button>
               </form>

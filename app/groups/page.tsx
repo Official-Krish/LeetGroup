@@ -85,9 +85,9 @@ const Groups = () => {
                   <Button variant="outline" onClick={() => handleGroupSelect(group.groupId)}>
                     <TrendingUp className="mr-2 h-4 w-4" /> View Leaderboard
                   </Button>
-                  <Link className="bg-white rounded-lg py-1.5 px-2 font-normal flex" href={`/group/${group.id}`}>
+                  <Link className="bg-white rounded-lg py-1.5 px-2 font-normal flex" href={`/leaderboard/striver/${group.groupId}`}>
                     <UsersRound className="h-5 w-5" />
-                    <div className="ml-1">Group Details</div>
+                    <div className="ml-1">Striver Sheet</div>
                   </Link>
                 </CardFooter>
               </Card>
